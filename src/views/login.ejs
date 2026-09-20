@@ -1,0 +1,17 @@
+<%- include('partials/head', { pageTitle: 'Log in · SourCode', user }) %>
+    <h1>Log in</h1>
+    <p class="sub">Members get their order history and, for staff, the back office.</p>
+    <% if (error) { %><div class="err"><%= error %></div><% } %>
+    <div class="panel">
+      <form action="/login" method="post">
+        <label class="field"><span>Email</span>
+          <input type="email" name="email" autocomplete="username" required value="<%= typeof email !== 'undefined' ? email : '' %>" />
+        </label>
+        <label class="field"><span>Password</span>
+          <input type="password" name="password" autocomplete="current-password" required />
+        </label>
+        <button class="btn" type="submit">Log in</button>
+      </form>
+    </div>
+    <p class="sub" style="font-size:.92rem">No account? <a href="/register">Register</a>.</p>
+<%- include('partials/foot') %>

@@ -1,0 +1,48 @@
+<%- include('partials/head', { pageTitle: 'Your bag · SourCode', user }) %>
+    <h1>Your bag</h1>
+    <% if (!lines.length) { %>
+      <p class="sub">Your bag is empty. Go and fill it at <a href="/">the counter</a>.</p>
+    <% } else { %>
+      <div class="panel wide">
+        <table>
+          <thead><tr><th>Sweet</th><th>Qty</th><th>Price</th><th>Line</th><th></th></tr></thead>
+          <tbody>
+            <% lines.forEach(function(l){ %>
+              <tr>
+                <td><%= l.name %></td>
+                <td><%= l.qty %></td>
+                <td>£<%= (l.price_pence/100).toFixed(2) %></td>
+                <td>£<%= (l.line_pence/100).toFixed(2) %></td>
+                <td>
+                  <form action="/cart/remove" method="post" style="display:inline">
+                    <input type="hidden" name="sweet_id" value="<%= l.id %>" />
+                    <button class="btn" style="padding:.3rem .7rem;background:var(--paper);color:var(--liquorice)">Remove</button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+          <tfoot>
+            <% if (typeof discount !== 'undefined' && discount > 0) { %>
+              <tr><td colspan="3" style="text-align:right">Discount</td><td colspan="2" style="color:var(--pistachio)">&minus;£<%= (discount/100).toFixed(2) %></td></tr>
+            <% } %>
+            <tr><td colspan="3" style="text-align:right"><strong>Total</strong></td><td colspan="2"><strong>£<%= (total/100).toFixed(2) %></strong></td></tr>
+          </tfoot>
+        </table>
+        <div style="margin-top:1.2rem">
+          <% if (user) { %>
+            <form action="/checkout" method="post" style="display:inline">
+              <button class="btn" type="submit">Check out</button>
+            </form>
+          <% } else { %>
+            <a class="btn" href="/login">Log in to check out</a>
+          <% } %>
+          <form action="/bag/save" method="post" style="display:inline;margin-left:.5rem">
+            <button class="btn" type="submit" style="background:var(--paper);color:var(--liquorice)">Save bag for later</button>
+          </form>
+          <a href="/bag/restore" style="margin-left:.5rem;font-family:var(--mono);font-size:.8rem">Restore saved bag</a>
+          <a href="/" style="margin-left:1rem">Keep shopping</a>
+        </div>
+      </div>
+    <% } %>
+<%- include('partials/foot') %>

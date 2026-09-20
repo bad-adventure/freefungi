@@ -1,0 +1,15 @@
+<%- include('partials/head', { pageTitle: 'Back office · SourCode', user }) %>
+    <h1>Back office <span class="badge">Staff only</span></h1>
+    <p class="sub">Every customer, every order. Mind how you go.</p>
+    <div class="panel wide">
+      <h2 style="font-family:var(--display);margin-top:0">Customers</h2>
+      <table>
+        <thead><tr><th>ID</th><th>Email</th><th>Admin</th></tr></thead>
+        <tbody>
+          <% customers.forEach(function(c){ %>
+            <tr><td><%= c.id %></td><td><%= c.email %></td><td><%= c.is_admin ? 'yes' : '' %></td></tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+<%- include('partials/foot') %>

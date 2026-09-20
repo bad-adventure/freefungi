@@ -1,0 +1,23 @@
+<%- include('partials/head', { pageTitle: 'Order #' + order.id + ' · SourCode', user }) %>
+    <h1>Order #<%= order.id %></h1>
+    <p class="sub">Placed <%= order.placed_at %> by <%= customer.email %>.</p>
+    <div class="panel wide">
+      <table>
+        <thead><tr><th>Sweet</th><th>Qty</th><th>Unit</th><th>Line</th></tr></thead>
+        <tbody>
+          <% items.forEach(function(it){ %>
+            <tr>
+              <td><%= it.name %></td>
+              <td><%= it.qty %></td>
+              <td>£<%= (it.unit_price_pence/100).toFixed(2) %></td>
+              <td>£<%= (it.unit_price_pence*it.qty/100).toFixed(2) %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+        <tfoot>
+          <tr><td colspan="3" style="text-align:right"><strong>Total</strong></td><td><strong>£<%= (order.total_pence/100).toFixed(2) %></strong></td></tr>
+        </tfoot>
+      </table>
+    </div>
+    <p><a href="/account">Back to your account</a></p>
+<%- include('partials/foot') %>

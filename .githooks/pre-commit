@@ -1,0 +1,20 @@
+#!/bin/sh
+# Block secrets, private files and challenge answers from being committed.
+# This repo is PUBLIC. See .githooks/lib.sh for the denylists.
+. "$(dirname "$0")/lib.sh"
+
+staged=$(git diff --cached --name-only --diff-filter=ACMR)
+[ -z "$staged" ] && exit 0
+
+bad_paths=$(scan_paths "$staged")
+bad_content=$(scan_added_content "$(git diff --cached -U0)")
+
+if [ -n "$bad_paths" ]; then
+  block "pre-commit / filename" "$bad_paths" "commit"
+  exit 1
+fi
+if [ -n "$bad_content" ]; then
+  block "pre-commit / content" "$bad_content" "commit"
+  exit 1
+fi
+exit 0

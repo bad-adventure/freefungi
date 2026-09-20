@@ -1,0 +1,30 @@
+#!/bin/sh
+# Second net: block a push that carries a secret, private file or answer,
+# even if it slipped past pre-commit (e.g. an earlier --no-verify commit).
+# This repo is PUBLIC. See .githooks/lib.sh for the denylists.
+. "$(dirname "$0")/lib.sh"
+
+zero=$(git hash-object -t tree /dev/null)   # empty tree, for new branches
+status=0
+
+# git feeds "<local ref> <local sha> <remote ref> <remote sha>" on stdin
+while read -r local_ref local_sha remote_ref remote_sha; do
+  # skip branch deletions (local sha all zeros)
+  case "$local_sha" in *[!0]*) : ;; *) continue ;; esac
+
+  case "$remote_sha" in
+    *[!0]*) base="$remote_sha" ;;   # existing branch: diff from remote tip
+    *)      base="$zero" ;;         # new branch: diff from empty tree
+  esac
+
+  files=$(git diff --name-only "$base" "$local_sha")
+  [ -z "$files" ] && continue
+
+  bad_paths=$(scan_paths "$files")
+  bad_content=$(scan_added_content "$(git diff -U0 "$base" "$local_sha")")
+
+  if [ -n "$bad_paths" ]; then block "pre-push / filename" "$bad_paths" "push"; status=1; fi
+  if [ -n "$bad_content" ]; then block "pre-push / content" "$bad_content" "push"; status=1; fi
+done
+
+exit $status

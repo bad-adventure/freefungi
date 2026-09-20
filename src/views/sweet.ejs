@@ -1,0 +1,48 @@
+<%
+  const slug = sweet.name.toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+%>
+<%- include('partials/head', { pageTitle: sweet.name + ' · SourCode', user }) %>
+    <p style="font-family:var(--mono);font-size:.75rem"><a href="/">&larr; Back to the counter</a></p>
+    <div style="display:grid;gap:1.5rem;grid-template-columns:minmax(0,14rem) minmax(0,1fr);align-items:start">
+      <div class="sweet-img" style="border:2px solid var(--liquorice);border-radius:5px;height:11rem"><%- art(sweet.name, sweet.category) %></div>
+      <div>
+        <span class="cat" style="font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)"><%= sweet.category %></span>
+        <h1 style="margin:.2rem 0 .3rem"><%= sweet.name %></h1>
+        <p class="sub"><%= sweet.description %></p>
+        <p class="price" style="font-family:var(--mono);font-weight:600;font-size:1.3rem;color:var(--raspberry-dk)">£<%= (sweet.price_pence/100).toFixed(2) %></p>
+        <div style="display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;margin-top:.6rem">
+          <form action="/cart/add" method="post">
+            <input type="hidden" name="sweet_id" value="<%= sweet.id %>" />
+            <input type="hidden" name="price" value="<%= sweet.price_pence %>" />
+            <button class="btn" type="submit">Add to bag</button>
+          </form>
+          <a href="/allergens?sheet=<%= slug %>.txt" style="font-family:var(--mono);font-size:.8rem">Allergen sheet</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel wide" style="margin-top:2rem">
+      <h2 style="font-family:var(--display);margin-top:0;font-size:1.3rem">Reviews</h2>
+      <% if (reviews.length) { %>
+        <% reviews.forEach(function(rv){ %>
+          <div style="border-top:1px solid var(--paper-edge);padding:.8rem 0">
+            <p style="margin:0 0 .3rem;font-family:var(--mono);font-size:.72rem;color:var(--ink-soft)"><%= rv.author %> · <%= rv.created_at.slice(0,10) %></p>
+            <div class="review-body"><%- rv.body %></div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <p class="sub">No reviews yet. Be the first.</p>
+      <% } %>
+
+      <% if (user) { %>
+        <form action="/sweet/<%= sweet.id %>/review" method="post" style="margin-top:1.2rem;border-top:2px solid var(--liquorice);padding-top:1.2rem">
+          <label class="field"><span>Leave a review</span>
+            <textarea name="body" rows="3" required style="width:100%;padding:.6rem .8rem;border:2px solid var(--liquorice);border-radius:3px;font-family:var(--body);font-size:1rem;background:var(--paper);color:var(--ink)"></textarea>
+          </label>
+          <button class="btn" type="submit" style="margin-top:.6rem">Post review</button>
+        </form>
+      <% } else { %>
+        <p class="sub" style="margin-top:1rem;font-size:.9rem"><a href="/login">Log in</a> to leave a review.</p>
+      <% } %>
+    </div>
+<%- include('partials/foot') %>

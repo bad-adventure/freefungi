@@ -1,0 +1,17 @@
+<%- include('partials/head', { pageTitle: 'Register · SourCode', user }) %>
+    <h1>Create an account</h1>
+    <p class="sub">Make as many as you like. Handy for testing what one account can do to another.</p>
+    <% if (error) { %><div class="err"><%= error %></div><% } %>
+    <div class="panel">
+      <form action="/register" method="post">
+        <label class="field"><span>Email</span>
+          <input type="email" name="email" autocomplete="username" required value="<%= typeof email !== 'undefined' ? email : '' %>" />
+        </label>
+        <label class="field"><span>Password</span>
+          <input type="password" name="password" autocomplete="new-password" required />
+        </label>
+        <button class="btn" type="submit">Register</button>
+      </form>
+    </div>
+    <p class="sub" style="font-size:.92rem">Already have one? <a href="/login">Log in</a>.</p>
+<%- include('partials/foot') %>

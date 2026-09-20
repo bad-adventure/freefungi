@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title><%= typeof pageTitle !== 'undefined' ? pageTitle : 'SourCode, the sweet shop' %></title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bevan&family=Crimson+Pro:wght@400;600&family=JetBrains+Mono&display=swap" />
+  <style>
+    :root {
+      --paper:#F4EADA; --paper-deep:#E9D9BE; --paper-edge:#DCC7A4;
+      --liquorice:#16110F; --ink:#2E231D; --ink-soft:#6A564A;
+      --raspberry:#C0324B; --raspberry-dk:#8E2138; --pistachio:#6E9152; --brass:#B8863B; --sherbet:#E39B33;
+      --display:'Bevan',Georgia,serif; --body:'Crimson Pro',Georgia,serif; --mono:'JetBrains Mono',monospace;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--body); font-size:1.1rem; line-height:1.6; }
+    .awning { height:22px; background:repeating-linear-gradient(90deg,var(--raspberry) 0 32px,var(--paper) 32px 64px); border-bottom:3px solid var(--liquorice); }
+    header { border-bottom:2px solid var(--liquorice); background:linear-gradient(180deg,#FBF5E9,var(--paper)); }
+    .wrap { width:min(64rem,100% - 3rem); margin-inline:auto; }
+    .head { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1rem 0; flex-wrap:wrap; }
+    .mark { font-family:var(--display); font-size:1.5rem; color:var(--liquorice); text-decoration:none; display:flex; align-items:center; gap:.5rem; }
+    .head-right { display:flex; align-items:center; gap:1rem; flex-wrap:wrap; }
+    .navlinks { display:flex; gap:1rem; align-items:center; font-family:var(--mono); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; }
+    .navlinks a { color:var(--ink-soft); text-decoration:none; }
+    .navlinks a:hover { color:var(--liquorice); }
+    .navlinks .who { color:var(--raspberry-dk); text-transform:none; letter-spacing:0; }
+    form.search { display:flex; gap:0; border:2px solid var(--liquorice); border-radius:3px; overflow:hidden; box-shadow:3px 3px 0 var(--paper-edge); }
+    form.search input { border:0; padding:.6rem .9rem; font-family:var(--mono); font-size:.9rem; background:var(--paper); min-width:min(14rem,45vw); color:var(--ink); }
+    form.search button { border:0; border-left:2px solid var(--liquorice); background:var(--liquorice); color:var(--paper); font-family:var(--mono); font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; padding:0 1.1rem; cursor:pointer; }
+    h1 { font-family:var(--display); font-size:2rem; margin:2rem 0 .3rem; color:var(--liquorice); }
+    .sub { color:var(--ink-soft); margin-top:0; }
+    .grid { display:grid; gap:1.25rem; grid-template-columns:repeat(auto-fill,minmax(14rem,1fr)); margin:1.5rem 0 3rem; }
+    .sweet { display:flex; flex-direction:column; border:2px solid var(--liquorice); border-radius:5px; background:#FBF5E9; box-shadow:3px 3px 0 var(--paper-edge); overflow:hidden; transition:transform .16s ease, box-shadow .16s ease; }
+    .sweet:hover { transform:translateY(-3px); box-shadow:5px 7px 0 var(--paper-edge); }
+    .sweet-img { height:118px; display:grid; place-items:center; border-bottom:2px solid var(--liquorice); background:radial-gradient(circle at 50% 38%, #ffffff, #EFE2CC); }
+    .sweet-img svg { width:76%; max-height:90px; display:block; }
+    .sweet-in { display:flex; flex-direction:column; flex:1; padding:.9rem 1rem 1rem; }
+    .sweet .cat { font-family:var(--mono); font-size:.6rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); }
+    .sweet h3 { font-family:var(--display); font-size:1.02rem; line-height:1.12; margin:.3rem 0 .4rem; color:var(--liquorice); }
+    .sweet p { font-size:.9rem; line-height:1.4; margin:0 0 .8rem; color:var(--ink-soft); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .sweet-foot { margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:.5rem; }
+    .sweet .price { font-family:var(--mono); font-weight:600; font-size:1.02rem; color:var(--raspberry-dk); }
+    .sweet-foot .btn { padding:.42rem .85rem; }
+    .results { border:2px solid var(--liquorice); border-radius:3px; background:#FBF5E9; padding:1.1rem 1.3rem; margin:1.5rem 0; box-shadow:3px 3px 0 var(--paper-edge); }
+    .results h2 { font-family:var(--display); font-size:1.1rem; margin:0 0 .6rem; }
+    table { width:100%; border-collapse:collapse; font-family:var(--mono); font-size:.82rem; }
+    td, th { text-align:left; padding:.4rem .5rem; border-bottom:1px solid var(--paper-edge); }
+    .err { border:2px solid var(--raspberry); border-left-width:8px; background:#FBF0F0; padding:1rem 1.2rem; border-radius:3px; margin:1.5rem 0; font-family:var(--mono); font-size:.82rem; color:var(--raspberry-dk); overflow-x:auto; }
+    .panel { border:2px solid var(--liquorice); border-radius:3px; background:#FBF5E9; padding:1.5rem 1.6rem; margin:1.5rem 0; box-shadow:3px 3px 0 var(--paper-edge); max-width:32rem; }
+    .panel.wide { max-width:none; }
+    .field { display:block; margin-bottom:1rem; }
+    .field span { display:block; font-family:var(--mono); font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:.35rem; }
+    .field input { width:100%; padding:.6rem .8rem; border:2px solid var(--liquorice); border-radius:3px; font-family:var(--mono); font-size:.9rem; background:var(--paper); color:var(--ink); }
+    .btn { display:inline-block; border:2px solid var(--liquorice); background:var(--liquorice); color:var(--paper); font-family:var(--mono); font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; padding:.7rem 1.3rem; border-radius:3px; cursor:pointer; text-decoration:none; box-shadow:3px 3px 0 var(--paper-edge); }
+    .btn:hover { background:var(--raspberry-dk); border-color:var(--raspberry-dk); }
+    .badge { display:inline-block; font-family:var(--mono); font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; background:var(--sherbet); color:var(--liquorice); border:1.5px solid var(--liquorice); border-radius:999px; padding:.15em .6em; }
+    footer { border-top:2px solid var(--liquorice); background:var(--paper-deep); padding:1.5rem 0; margin-top:2rem; font-size:.85rem; color:var(--ink-soft); }
+    footer a { color:var(--raspberry-dk); }
+  </style>
+</head>
+<body>
+  <div class="awning"></div>
+  <header>
+    <div class="wrap head">
+      <a class="mark" href="/">🍬 SourCode</a>
+      <div class="head-right">
+        <form class="search" action="/search" method="get" role="search">
+          <input type="text" name="q" value="<%= typeof q !== 'undefined' ? q : '' %>" placeholder="Search the sweets…" aria-label="Search sweets" autocomplete="off" />
+          <button type="submit">Search</button>
+        </form>
+        <nav class="navlinks">
+          <a href="/cart">Bag<% if (typeof cartCount !== 'undefined' && cartCount) { %> (<%= cartCount %>)<% } %></a>
+          <% if (user) { %>
+            <span class="who">Hi, <%= user.email %></span>
+            <a href="/account">Account</a>
+            <% if (user.is_admin) { %><a href="/admin">Admin</a><% } %>
+            <form action="/logout" method="post" style="display:inline"><button class="btn" style="padding:.4rem .8rem">Log out</button></form>
+          <% } else { %>
+            <a href="/login">Log in</a>
+          <% } %>
+        </nav>
+      </div>
+    </div>
+  </header>
+  <main class="wrap">

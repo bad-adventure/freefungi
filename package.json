@@ -1,0 +1,40 @@
+{
+  "name": "freefungi",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "description": "A deliberately vulnerable sweet shop for practising web application security.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "prepare": "git config core.hooksPath .githooks || true",
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "seed": "node src/db/seed.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.4.1",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0"
+  },
+  "homepage": "https://freefungi.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bad-adventure/freefungi.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bad-adventure/freefungi/issues"
+  },
+  "author": "Shakel Ahmed (https://shakelahmed.com)",
+  "keywords": [
+    "security",
+    "training",
+    "vulnerable",
+    "ctf",
+    "appsec",
+    "sweet-shop"
+  ]
+}

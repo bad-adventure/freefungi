@@ -1,0 +1,24 @@
+# Run SourCode with sensible, self-contained defaults:
+#   docker compose up
+services:
+  sourcode:
+    # Use the published image, or build locally with `docker compose up --build`
+    image: ghcr.io/bad-adventure/freefungi:latest
+    build: .
+    container_name: SourCode
+    ports:
+      - "3000:3000"          # http://localhost:3000
+    init: true               # a real init handles signals, so stop is instant
+    restart: unless-stopped  # auto-recover if it ever falls over
+    # Modest caps so a runaway request can never eat the host
+    mem_limit: 256m
+    cpus: 1.0
+    pids_limit: 256
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 3s
+      start_period: 10s
+      retries: 3

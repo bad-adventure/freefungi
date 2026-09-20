@@ -1,0 +1,28 @@
+# ==============================================================
+#  THIS REPOSITORY IS PUBLIC: github.com/bad-adventure/freefungi
+#  Never commit secrets, credentials, or challenge answers.
+#  Private/maintainer files live in ../internal/ (outside this repo).
+#  A pre-commit / pre-push hook (.githooks/) actively enforces this.
+# ==============================================================
+
+# dependencies and build artefacts
+node_modules/
+freefungi.db
+*.db
+*.sqlite
+*.sqlite3
+.DS_Store
+
+# secrets (never in a public repo)
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_rsa.*
+
+# maintainer / AI guidance and private files (kept out of the public repo)
+CLAUDE.md
+internal/

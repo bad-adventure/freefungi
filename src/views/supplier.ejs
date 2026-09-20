@@ -1,0 +1,20 @@
+<%- include('partials/head', { pageTitle: 'Supplier portal · SourCode', user }) %>
+    <h1>Supplier portal</h1>
+    <p class="sub">Wholesalers: paste your stock list as XML and we will import the items.</p>
+    <div class="panel wide">
+      <form action="/supplier" method="post">
+        <label class="field"><span>Stock list (XML)</span>
+          <textarea name="xml" rows="8" style="width:100%;padding:.6rem .8rem;border:2px solid var(--liquorice);border-radius:3px;font-family:var(--mono);font-size:.85rem;background:var(--paper);color:var(--ink)"><%= xml %></textarea>
+        </label>
+        <button class="btn" type="submit">Import stock</button>
+      </form>
+    </div>
+    <% if (items) { %>
+      <div class="panel wide">
+        <h2 style="font-family:var(--display);margin-top:0;font-size:1.2rem">Imported <%= items.length %> item<%= items.length === 1 ? '' : 's' %></h2>
+        <ul style="font-family:var(--mono);font-size:.82rem">
+          <% items.forEach(function(it){ %><li><%= it %></li><% }) %>
+        </ul>
+      </div>
+    <% } %>
+<%- include('partials/foot') %>

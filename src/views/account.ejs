@@ -1,0 +1,45 @@
+<%- include('partials/head', { pageTitle: 'Your account · SourCode', user }) %>
+    <h1>Your account</h1>
+    <p class="sub">Signed in as <%= user.email %><% if (user.is_admin) { %> <span class="badge">Staff</span><% } %>.</p>
+
+    <div class="panel">
+      <h2 style="font-family:var(--display);margin-top:0;font-size:1.2rem">Your details</h2>
+      <form action="/account/email/change" method="get" style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
+        <label style="font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)">Email</label>
+        <input type="email" name="to" value="<%= user.email %>" required
+               style="padding:.55rem .8rem;border:2px solid var(--liquorice);border-radius:3px;font-family:var(--mono);font-size:.9rem;background:var(--paper);color:var(--ink)" />
+        <button class="btn" type="submit">Update email</button>
+      </form>
+    </div>
+
+    <div class="panel">
+      <h2 style="font-family:var(--display);margin-top:0;font-size:1.2rem">Store credit</h2>
+      <p style="font-family:var(--mono);font-size:1.4rem;color:var(--raspberry-dk);margin:.2rem 0 1rem">£<%= ((user.credit_pence||0)/100).toFixed(2) %></p>
+      <% if (typeof giftMsg !== 'undefined' && giftMsg) { %>
+        <p style="font-family:var(--mono);font-size:.85rem;color:<%= giftMsg.ok ? 'var(--pistachio)' : 'var(--raspberry-dk)' %>"><%= giftMsg.text %></p>
+      <% } %>
+      <form action="/gift-card" method="post" style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
+        <input type="text" name="code" placeholder="Gift card code" aria-label="Gift card code" autocomplete="off"
+               style="padding:.55rem .8rem;border:2px solid var(--liquorice);border-radius:3px;font-family:var(--mono);font-size:.9rem;background:var(--paper);color:var(--ink)" />
+        <button class="btn" type="submit">Redeem</button>
+      </form>
+      <p style="font-family:var(--mono);font-size:.78rem;color:var(--ink-soft);margin:1rem 0 .4rem">Spend £5.00 of credit on a voucher:</p>
+      <form action="/rewards/claim" method="post"><button class="btn" type="submit" style="background:var(--paper);color:var(--liquorice)">Claim a &pound;5 voucher</button></form>
+    </div>
+
+    <div class="panel wide">
+      <h2 style="font-family:var(--display);margin-top:0;font-size:1.2rem">Order history</h2>
+      <% if (orders.length) { %>
+        <table>
+          <thead><tr><th>Order</th><th>Total</th><th>Placed</th></tr></thead>
+          <tbody>
+            <% orders.forEach(function(o){ %>
+              <tr><td><a href="/orders/<%= o.id %>">#<%= o.id %></a></td><td>£<%= (o.total_pence/100).toFixed(2) %></td><td><%= o.placed_at %></td></tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <p>No orders yet. The sweets are right there.</p>
+      <% } %>
+    </div>
+<%- include('partials/foot') %>
